@@ -1,0 +1,23 @@
+{
+  "name": "bitbucket-repo-analyzer",
+  "version": "1.0.3",
+  "main": "index.js",
+  "bin": {
+    "bitbucket-repo-analyzer": "./bin/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "log-update": "^6.1.0",
+    "node-fetch": "^3.3.2",
+    "p-limit": "^6.2.0",
+    "simple-git": "^3.27.0"
+  }
+}
