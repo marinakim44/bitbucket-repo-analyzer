@@ -20,5 +20,13 @@
     "p-limit": "^6.2.0",
     "semver": "^7.7.1",
     "simple-git": "^3.27.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marinakim44/bitbucket-repo-analyzer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marinakim44/bitbucket-repo-analyzer/issues"
+  },
+  "homepage": "https://github.com/marinakim44/bitbucket-repo-analyzer#readme"
 }
