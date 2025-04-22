@@ -1,8 +1,9 @@
 # 🕵️‍♀️ Bitbucket Repo Analyzer
 
-A light and fast CLI tool to scan all Bitbucket repositories in your workspace for things for updated AWS SDK version. Reminder: AWS SDK v2 will be deprecated and we need to switch to AWS SDK v3 by 8th of September 2025.
+A light and fast CLI tool to scan all Bitbucket repositories in your workspace for updated AWS SDK version.
+Reminder: AWS SDK v2 will be deprecated and we need to switch to AWS SDK v3 by 8th of September 2025.
 
-Perfect for monthly audits and maintenance activities or just catching potential vulnerabilities.
+Perfect for speeding up monthly audits and maintenance activities.
 
 ---
 
@@ -10,12 +11,20 @@ Perfect for monthly audits and maintenance activities or just catching potential
 
 - ✅ Scan all Bitbucket repos in a workspace
 - ✅ Detect usage of AWS SDK v2 (`aws-sdk`) or v3 (`@aws-sdk/*`)
-- ✅ Works with monorepos + nested `package.json` via `--deep`
-- ✅ Concurrency + progress bar = super fast scans
+- ✅ Works with monorepos + nested `package.json` via `--deep` flag
+- ✅ Concurrency + progress bar + limiting to latest commit = fast scans
 - ✅ Output results to JSON for reporting
-- ✅ Clean CLI UX, ready for automation or casual usage
 
 ---
+
+## Set Environmental Variables
+
+Set env varis in the terminal:
+export BITBUCKET_USERNAME=your-username
+export BITBUCKET_APP_PASSWORD=your-password
+
+or prefix the command with env vars:
+`BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name`
 
 ## 📦 Installation
 
@@ -23,18 +32,9 @@ Perfect for monthly audits and maintenance activities or just catching potential
 npm install -g bitbucket-repo-analyzer
 ```
 
-## Set Environmental Variables
-
-export BITBUCKET_USERNAME=your-username
-export BITBUCKET_APP_PASSWORD=your-password
-
-or prefix the command with these values:
-`BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name`
-
 ## Use without installation
 
 You can use it without installing as well.
-Don't forget to prefix with env vars or set them in your terminal.
 `npx bitbucket-repo-analyzer count --org=org-name`
 
 ## Usage
