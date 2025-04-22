@@ -78,22 +78,23 @@ Specify repos in a .txt file:
 
 A .json file is saved to the output/ folder automatically.
 Example:
-{
-"summary": [
-"📊 React Usage Summary:",
-"• Total repos analyzed: 50",
-"• Using React: 38",
-"• Active support (>= 18): 22",
-"• Deprecated (17): 8",
-"• Legacy (16): 6",
-"• Unsupported (<16): 2"
-],
-"results": [
-"🔎 repo-a: react: ^18.2.0 | support: Active",
-"🔎 repo-b: react: ^17.0.2 | ❌ outdated | support: Deprecated",
-"❌ repo-c is not using React"
-]
-}
+
+## 📊 React Usage Summary
+
+### Summary:
+
+- **Total repos analyzed:** 50
+- **Using React:** 38
+  - **Active support (>= 18):** 22
+  - **Deprecated (17):** 8
+  - **Legacy (16):** 6
+  - **Unsupported (<16):** 2
+
+### Results:
+
+- 🔎 **repo-a:** react: `^18.2.0` | support: **Active**
+- 🔎 **repo-b:** react: `^17.0.2` | ❌ outdated | support: **Deprecated**
+- ❌ **repo-c:** is not using React
 
 ## Roadmap
 
