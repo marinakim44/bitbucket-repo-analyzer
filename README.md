@@ -97,15 +97,12 @@ Example:
 
 ## Roadmap
 
-[x] Check React versions and support level
-[x] Deep scan with multiple package.json detection
-[x] Filter repos via file input
-[ ] Check outdated npm packages and vulnerabilities
-[ ] Detect secrets: .env, .pem, hardcoded tokens
-[ ] Dockerfile best practice checker
-[ ] React Native version check
-[ ] Markdown / CSV output support
-[ ] GitHub / GitLab support
+- Check outdated npm packages and vulnerabilities
+- Detect secrets: .env, .pem, hardcoded tokens
+- Dockerfile best practice checker
+- React Native version check
+- Markdown / CSV output support
+- GitHub / GitLab support
 
 ## Author
 
