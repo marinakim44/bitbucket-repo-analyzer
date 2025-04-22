@@ -17,6 +17,9 @@ const orgArg = args.find((arg) => arg.startsWith("--org="));
 const org = orgArg?.split("=")[1];
 const reposArg = args.find((arg) => arg.startsWith("--repos="));
 const reposFilter = reposArg?.split("=")[1]?.split(",") ?? null;
+const reposFile = args
+  .find((arg) => arg.startsWith("--reposFile="))
+  ?.split("=")[1];
 const deepScan = args.includes("--deep");
 
 if (command === "check") {
@@ -24,7 +27,10 @@ if (command === "check") {
     console.error("❌ Missing check name or org.");
     process.exit(1);
   }
-  runAnalyzer(checkName, org, reposFilter, { deepScan });
+  await runAnalyzer(checkName, org, reposFilter, {
+    deepScan,
+    reposFile,
+  });
 } else if (command === "count") {
   if (!org) {
     console.error("❌ Please provide a Bitbucket org using --org=<org-name>.");
