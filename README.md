@@ -107,8 +107,9 @@ Example:
 
 ## Author
 
-Built by Marina Kim | GitHub @marinakim44
-Founder of CatBytes Community for Women in Tech (www.catbytes.io)
+Built by Marina Kim  
+GitHub: [@marinakim44](https://github.com/marinakim44)  
+Founder of [CatBytes Community for Women in Tech](https://www.catbytes.io)
 
 ## License
 
