@@ -29,11 +29,15 @@ Perfect for speeding up monthly audits and maintenance activities.
 ## Set Environmental Variables
 
 Set env vars in the terminal:
+```bash
 export BITBUCKET_USERNAME=your-username
 export BITBUCKET_APP_PASSWORD=your-password
+```
 
-or prefix the command with env vars:
-`BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name`
+It's also possible to prefix the command with env vars:
+```bash
+BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name
+```
 
 ## 📦 Installation
 
@@ -45,34 +49,49 @@ npm install -g bitbucket-repo-analyzer
 
 ## Use without installation
 
-You can use it without installing as well.
-`npx bitbucket-repo-analyzer count --org=org-name`
+You can execute it directly without installing.
+```bash
+npx bitbucket-repo-analyzer count --org=org-name
+```
 
 ## Usage
 
 ### Check AWS SDK version across all repos:
 
-`bitbucket-repo-analyzer check aws-sdk --org=my-org`
+```bash
+bitbucket-repo-analyzer check aws-sdk --org=my-org
+```
 
 ### Check React version across all repos:
 
-`bitbucket-repo-analyzer check react-version --org=my-org
+```bash
+bitbucket-repo-analyzer check react-version --org=my-org
+```
 
 ### Scan specific repos:
 
 Specify repos in a command:
-`bitbucket-repo-analyzer check aws-sdk --org=my-org --repos=repo-one,repo-two`
+```bash
+bitbucket-repo-analyzer check aws-sdk --org=my-org --repos=repo-one,repo-two
+```
 
 Specify repos in a .txt file:
-`bitbucket-repo-analyzer check aws-sdk --org=my-org --reposFile=repos.txt`
+```bash
+bitbucket-repo-analyzer check aws-sdk --org=my-org --reposFile=repos.txt
+```
 
-### Enable deep scan mode (look for package.json in nested folderd)
 
-`bitbucket-repo-analyzer check aws-sdk --org=my-org --deep`
+### Enable deep scan mode (look for package.json in nested folders)
+
+```bash
+bitbucket-repo-analyzer check aws-sdk --org=my-org --deep
+```
 
 ### Count how many repos you have in Bitbucket
 
-`bitbucket-repo-analyzer count --org=my-org`
+```bash
+bitbucket-repo-analyzer count --org=my-org
+```
 
 ## Output
 
