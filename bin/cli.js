@@ -21,6 +21,13 @@ const reposFile = args
   .find((arg) => arg.startsWith("--reposFile="))
   ?.split("=")[1];
 const deepScan = args.includes("--deep");
+let keyword = null;
+if (checkName === "keyword") {
+  keyword = args.find((arg) => arg.startsWith("--keyword="))?.split("=")[1];
+  if (!keyword && args[2] && !args[2].startsWith("--")) {
+    keyword = args[2]; // fallback if user writes: check keyword apilayer
+  }
+}
 
 if (command === "check") {
   if (!checkName || !org) {
@@ -30,6 +37,7 @@ if (command === "check") {
   await runAnalyzer(checkName, org, reposFilter, {
     deepScan,
     reposFile,
+    keyword,
   });
 } else if (command === "count") {
   if (!org) {
