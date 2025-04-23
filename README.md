@@ -29,11 +29,15 @@ Perfect for speeding up monthly audits and maintenance activities.
 ## Set Environmental Variables
 
 Set env vars in the terminal:
+```bash
 export BITBUCKET_USERNAME=your-username
 export BITBUCKET_APP_PASSWORD=your-password
+```
 
 It's also possible to prefix the command with env vars:
-`BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name`
+```bash
+BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name
+```
 
 ## 📦 Installation
 
