@@ -3,7 +3,9 @@
 A light and fast CLI tool to scan all Bitbucket repositories in your workspace for:
 
 - React versions
+- React Native versions
 - AWS SDK v2 vs v3 versions
+- Keywords
 
 Reminder: AWS SDK v2 will be deprecated and we need to switch to AWS SDK v3 by 8th of September 2025.
 
@@ -17,6 +19,8 @@ Perfect for speeding up monthly audits and maintenance activities.
 - ✅ Detect usage of:
   - AWS SDK v2 (`aws-sdk`) and v3 (`@aws-sdk/*`)
   - React versions (18+, 17, 16, <16)
+  - React Native versions
+  - Keywords
 - ✅ Classify React support lifecycle (Active, Deprecated, Legacy, Unsupported)
 - ✅ Works with monorepos + nested `package.json` via `--deep` flag
 - ✅ Supports repo filtering via `--repos` or `--reposFile`
@@ -29,12 +33,14 @@ Perfect for speeding up monthly audits and maintenance activities.
 ## Set Environmental Variables
 
 Set env vars in the terminal:
+
 ```bash
 export BITBUCKET_USERNAME=your-username
 export BITBUCKET_APP_PASSWORD=your-password
 ```
 
 It's also possible to prefix the command with env vars:
+
 ```bash
 BITBUCKET_USERNAME=username BITBUCKET_APP_PASSWORD=password npx bitbucket-repo-analyzer count --org=org-name
 ```
@@ -50,6 +56,7 @@ npm install -g bitbucket-repo-analyzer
 ## Use without installation
 
 You can execute it directly without installing.
+
 ```bash
 npx bitbucket-repo-analyzer count --org=org-name
 ```
@@ -71,20 +78,45 @@ bitbucket-repo-analyzer check react-version --org=my-org
 ### Scan specific repos:
 
 Specify repos in a command:
+
 ```bash
 bitbucket-repo-analyzer check aws-sdk --org=my-org --repos=repo-one,repo-two
 ```
 
 Specify repos in a .txt file:
+
 ```bash
 bitbucket-repo-analyzer check aws-sdk --org=my-org --reposFile=repos.txt
 ```
-
 
 ### Enable deep scan mode (look for package.json in nested folders)
 
 ```bash
 bitbucket-repo-analyzer check aws-sdk --org=my-org --deep
+```
+
+### Check React versions
+
+```bash
+bitbucket-repo-analyzer check react-version --org=my-org
+```
+
+### Check React Native versions
+
+```bash
+bitbucket-repo-analyzer check react-native-version --org=my-org
+```
+
+### Search keyword across repos
+
+```bash
+bitbucket-repo-analyzer keyword <keyword> --org=my-org
+```
+
+For example
+
+```bash
+bitbucket-repo-analyzer keyword apilayer --org=my-org
 ```
 
 ### Count how many repos you have in Bitbucket
