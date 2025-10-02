@@ -1,0 +1,50 @@
+image: atlassian/default-image:3
+
+options:
+  docker: true
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Build & Deploy to ECS
+          services:
+            - docker
+          caches:
+            - docker
+          script:
+            # auth with AWS ECR
+            - pipe: atlassian/aws-ecr-login:1.4.1
+              variables:
+                AWS_DEFAULT_REGION: $AWS_REGION
+                AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
+
+            # docker build and tag image
+            - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest .
+            - docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest \
+              $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$BITBUCKET_COMMIT
+
+            # docker push image
+            - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
+            - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$BITBUCKET_COMMIT
+
+            # 4. Trigger ECS service deployments
+            - pipe: atlassian/aws-cli-run:1.5.0
+              variables:
+                AWS_DEFAULT_REGION: $AWS_REGION
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                COMMAND: |
+                  aws ecs update-service \
+                    --cluster $ECS_CLUSTER \
+                    --service $API_SERVICE_NAME \
+                    --force-new-deployment
+                  aws ecs update-service \
+                    --cluster $ECS_CLUSTER \
+                    --service $WORKER_SERVICE_NAME \
+                    --force-new-deployment
+
+definitions:
+  services:
+    docker:
+      memory: 3072
