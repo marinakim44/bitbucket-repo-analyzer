@@ -24,7 +24,7 @@ pipelines:
       - step:
           name: Deploy to ECS
           script:
-            - pipe: atlassian/aws-ecs-deploy:2.5.0
+            - pipe: atlassian/aws-ecs-deploy:1.15.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
@@ -33,7 +33,7 @@ pipelines:
                 TASK_DEFINITION: $TASK_DEF_NAME_API
                 FORCE_DEPLOY: "true"
 
-            - pipe: atlassian/aws-ecs-deploy:2.5.0
+            - pipe: atlassian/aws-ecs-deploy:1.15.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
