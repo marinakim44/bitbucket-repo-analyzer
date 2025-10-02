@@ -14,7 +14,7 @@ pipelines:
             - docker
           script:
             # auth with AWS ECR
-            - pipe: atlassian/aws-ecr-login:1.4.1
+            - pipe: atlassian/aws-ecr-login:1.4.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
@@ -29,7 +29,7 @@ pipelines:
             - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$BITBUCKET_COMMIT
 
             # 4. Trigger ECS service deployments
-            - pipe: atlassian/aws-cli-run:1.5.0
+            - pipe: atlassian/aws-cli-run:1.6.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
