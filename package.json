@@ -12,19 +12,27 @@
   ],
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.899.0",
+    "@aws-sdk/client-sqs": "^3.899.0",
+    "@aws-sdk/lib-dynamodb": "^3.899.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
     "log-update": "^6.1.0",
     "node-fetch": "^3.3.2",
     "p-limit": "^6.2.0",
     "semver": "^7.7.1",
-    "simple-git": "^3.27.0"
+    "simple-git": "^3.27.0",
+    "uuid": "^13.0.0"
   },
   "repository": {
     "type": "git",
