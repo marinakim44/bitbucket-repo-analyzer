@@ -16,7 +16,7 @@ pipelines:
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
-                IMAGE_NAME: $ECR_REPO
+                IMAGE_NAME: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO
                 TAGS: "latest,$BITBUCKET_COMMIT"
 
       - step:
