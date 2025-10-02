@@ -15,13 +15,12 @@ pipelines:
               -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$BITBUCKET_COMMIT \
               .
 
-            - pipe: atlassian/aws-ecr-login:1.4.0
+            - pipe: atlassian/aws-ecr-push-image:2.6.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
-
-            - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
-            - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$BITBUCKET_COMMIT
+                IMAGE_NAME: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO
+                TAGS: "latest,$BITBUCKET_COMMIT"
 
       - step:
           name: Deploy to ECS
