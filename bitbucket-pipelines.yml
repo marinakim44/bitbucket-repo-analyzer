@@ -10,9 +10,7 @@ pipelines:
           caches:
             - docker
           script:
-            - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
-              .
-
+            - docker build -t $ECR_REPO:latest -t $ECR_REPO:$BITBUCKET_COMMIT .
             - pipe: atlassian/aws-ecr-push-image:2.6.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
