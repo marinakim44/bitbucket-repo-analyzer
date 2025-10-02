@@ -1,0 +1,67 @@
+{
+  "family": "support-manager-api-worker",
+  "containerDefinitions": [
+    {
+      "command": ["node", "worker.js"],
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "BITBUCKET_APP_USERNAME",
+          "value": "mkim1"
+        },
+        {
+          "name": "NPM_CONFIG_LEGACY_PEER_DEPS",
+          "value": "\"true\""
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "eu-west-2"
+        },
+        {
+          "name": "AWS_QUEUE_URL",
+          "value": "https://sqs.eu-west-2.amazonaws.com/363720909149/pre-maintenance-jobs"
+        }
+      ],
+      "essential": true,
+      "image": "363720909149.dkr.ecr.eu-west-2.amazonaws.com/support-manager-api:v9",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/support-manager-api-worker",
+          "awslogs-create-group": "true",
+          "awslogs-region": "eu-west-2",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "mountPoints": [],
+      "name": "support-api-worker",
+      "portMappings": [],
+      "secrets": [
+        {
+          "name": "API_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:363720909149:secret:supportAppApi-G4PbpI:API_TOKEN::"
+        },
+        {
+          "name": "BITBUCKET_APP_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:363720909149:secret:supportAppApi-G4PbpI:BITBUCKET_APP_PASSWORD::"
+        }
+      ],
+      "systemControls": [],
+      "volumesFrom": []
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::363720909149:role/SupportManagerAPITaskRole",
+  "executionRoleArn": "arn:aws:iam::363720909149:role/SupportManagerAPITaskRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "enableFaultInjection": false
+}

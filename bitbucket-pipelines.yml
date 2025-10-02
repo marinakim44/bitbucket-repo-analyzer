@@ -34,7 +34,7 @@ pipelines:
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
                 CLUSTER_NAME: $ECS_CLUSTER
                 SERVICE_NAME: $API_SERVICE_NAME
-                TASK_DEFINITION: $TASK_DEF_NAME_API
+                TASK_DEFINITION: support-manager-task.json
                 FORCE_DEPLOY: "true"
 
             - pipe: atlassian/aws-ecs-deploy:1.15.0
@@ -43,5 +43,5 @@ pipelines:
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
                 CLUSTER_NAME: $ECS_CLUSTER
                 SERVICE_NAME: $WORKER_SERVICE_NAME
-                TASK_DEFINITION: $TASK_DEF_NAME_WORKER
+                TASK_DEFINITION: support-manager-task-worker.json
                 FORCE_DEPLOY: "true"

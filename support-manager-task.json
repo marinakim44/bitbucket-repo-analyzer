@@ -1,17 +1,67 @@
 {
   "family": "support-manager-api",
-  "executionRoleArn": "arn:aws:iam::363720909149:role/ecsTaskExecutionRole",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "256",
-  "memory": "512",
   "containerDefinitions": [
     {
-      "name": "support-manager-api",
-      "image": "363720909149.dkr.ecr.eu-west-2.amazonaws.com/support-manager-api:latest",
-      "portMappings": [{ "containerPort": 8080, "protocol": "tcp" }],
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "BITBUCKET_USERNAME",
+          "value": "mkim1"
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "eu-west-2"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "AWS_QUEUE_URL",
+          "value": "https://sqs.eu-west-2.amazonaws.com/363720909149/pre-maintenance-jobs"
+        }
+      ],
       "essential": true,
-      "environment": [{ "name": "NODE_ENV", "value": "production" }]
+      "image": "363720909149.dkr.ecr.eu-west-2.amazonaws.com/support-manager-api:v3",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/support-manager-api",
+          "awslogs-create-group": "true",
+          "awslogs-region": "eu-west-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "name": "support-manager-api",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "name": "support-manager-api-8080-tcp",
+          "protocol": "tcp"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "API_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:363720909149:secret:supportAppApi-G4PbpI:API_TOKEN::"
+        },
+        {
+          "name": "BITBUCKET_APP_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:363720909149:secret:supportAppApi-G4PbpI:BITBUCKET_APP_PASSWORD::"
+        }
+      ],
+      "systemControls": [],
+      "volumesFrom": []
     }
-  ]
+  ],
+  "taskRoleArn": "arn:aws:iam::363720909149:role/SupportManagerAPITaskRole",
+  "executionRoleArn": "arn:aws:iam::363720909149:role/SupportManagerAPITaskRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512"
 }
