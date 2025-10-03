@@ -99,6 +99,12 @@ app.post("/pre-maintenance", async (req, res) => {
   res.status(202).json({ jobId });
 });
 
+const JOB_STATUSES = {
+  inprogress: "IN_PROGRESS",
+  completed: "COMPLETED",
+  pending: "PENDING",
+};
+
 app.get("/jobs/status/:status", async (req, res) => {
   const requested = req.params.status;
   const status = JOB_STATUSES[requested];
@@ -123,9 +129,7 @@ app.get("/jobs/status/:status", async (req, res) => {
 
     if (requested === "inprogress") {
       // there can only be 1 in progress at a time, so limiting to 1
-      const { Items = [] } = await ddb.send(
-        new ScanCommand({ ...baseParams, Limit: 1 })
-      );
+      const { Items = [] } = await ddb.send(new ScanCommand(baseParams));
       items = Items;
     } else {
       // Completed: scan all completed jobs
@@ -188,11 +192,6 @@ app.get("/jobs/:jobId", async (req, res) => {
       .json({ error: err.message || "Could not fetch job status" });
   }
 });
-
-const JOB_STATUSES = {
-  inprogress: "IN_PROGRESS",
-  completed: "COMPLETED",
-};
 
 const PORT = process.env.PORT || 8080;
 
