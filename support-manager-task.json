@@ -22,7 +22,7 @@
         }
       ],
       "essential": true,
-      "image": "363720909149.dkr.ecr.eu-west-2.amazonaws.com/support-manager-api:v3",
+      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${BITBUCKET_COMMIT}",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

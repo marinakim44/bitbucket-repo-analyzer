@@ -27,21 +27,25 @@ pipelines:
 
       - step:
           name: Deploy to ECS
+          services:
+            - docker
           script:
+            - envsubst < support-manager-task.json > task-def-updated.json
             - pipe: atlassian/aws-ecs-deploy:1.15.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
                 CLUSTER_NAME: $ECS_CLUSTER
                 SERVICE_NAME: $API_SERVICE_NAME
-                TASK_DEFINITION: support-manager-task.json
+                TASK_DEFINITION: task-def-updated.json
                 FORCE_DEPLOY: "true"
 
+            - envsubst < support-manager-task-worker.json > task-def-worker-updated.json
             - pipe: atlassian/aws-ecs-deploy:1.15.0
               variables:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
                 CLUSTER_NAME: $ECS_CLUSTER
                 SERVICE_NAME: $WORKER_SERVICE_NAME
-                TASK_DEFINITION: support-manager-task-worker.json
+                TASK_DEFINITION: task-def-worker-updated.json
                 FORCE_DEPLOY: "true"
