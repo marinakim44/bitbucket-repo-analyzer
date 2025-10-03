@@ -4,7 +4,12 @@ import rateLimit from "express-rate-limit";
 import cors from "cors";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  ScanCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 
 const region = process.env.AWS_REGION;
@@ -61,7 +66,7 @@ app.use((req, res, next) => {
 
 // run pre-maintenance for all projects
 app.post("/pre-maintenance", async (req, res) => {
-  console.log("pre maintenance was triggered")
+  console.log("pre maintenance was triggered");
   const projects = Array.isArray(req.body?.projects) ? req.body.projects : [];
   console.log("projects", projects);
   if (!projects.length) {
@@ -94,16 +99,79 @@ app.post("/pre-maintenance", async (req, res) => {
   res.status(202).json({ jobId });
 });
 
+app.get("/jobs/status/:status", async (req, res) => {
+  const requested = req.params.status;
+  const status = JOB_STATUSES[requested];
+
+  if (!status) {
+    return res.status(400).json({ error: "Invalid status" });
+  }
+
+  try {
+    const baseParams = {
+      TableName: tableName,
+      FilterExpression: "#st = :st",
+      ExpressionAttributeNames: {
+        "#st": "Status",
+      },
+      ExpressionAttributeValues: {
+        ":st": status,
+      },
+    };
+
+    let items;
+
+    if (requested === "inprogress") {
+      // there can only be 1 in progress at a time, so limiting to 1
+      const { Items = [] } = await ddb.send(
+        new ScanCommand({ ...baseParams, Limit: 1 })
+      );
+      items = Items;
+    } else {
+      // Completed: scan all completed jobs
+      const { Items = [] } = await ddb.send(new ScanCommand(baseParams));
+      items = Items;
+    }
+
+    if (items.length === 0) {
+      return res.status(404).json({ error: `No job with status ${status}` });
+    }
+
+    // filter last complete job
+    let job = items[0];
+    if (requested === "completed" && items.length > 1) {
+      job = items.sort(
+        (a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt)
+      )[0];
+    }
+
+    return res.json({
+      jobId: job.JobId,
+      status: job.Status,
+      progress: Number(job.Progress),
+      results: job.Results || [],
+      createdAt: job.CreatedAt,
+    });
+  } catch (err) {
+    console.error("Error fetching jobs:", err);
+    return res
+      .status(err.statusCode || 500)
+      .json({ error: err.message || "Could not fetch jobs" });
+  }
+});
+
 app.get("/jobs/:jobId", async (req, res) => {
   const jobId = req.params.jobId;
   try {
-    const { Item } = await ddb.send(new GetCommand({
-      TableName: tableName,
-      Key: { JobId: jobId }
-    }));
-    if(!Item) {
+    const { Item } = await ddb.send(
+      new GetCommand({
+        TableName: tableName,
+        Key: { JobId: jobId },
+      })
+    );
+    if (!Item) {
       return res.status(404).json({ error: "Job not found" });
-    };
+    }
 
     const { Status, Progress, Results, CreatedAt } = Item;
     res.json({
@@ -111,13 +179,20 @@ app.get("/jobs/:jobId", async (req, res) => {
       status: Status,
       progress: Number(Progress),
       results: Results || [],
-      createdAt: CreatedAt
+      createdAt: CreatedAt,
     });
-  } catch(err) {
+  } catch (err) {
     console.error("Error fetching job", err);
-    res.status(err.statusCode || 500).json({ error: err.message || "Could not fetch job status" })
+    res
+      .status(err.statusCode || 500)
+      .json({ error: err.message || "Could not fetch job status" });
   }
-})
+});
+
+const JOB_STATUSES = {
+  inprogress: "IN_PROGRESS",
+  completed: "COMPLETED",
+};
 
 const PORT = process.env.PORT || 8080;
 
