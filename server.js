@@ -26,30 +26,20 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
 
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://support-manager-react-app.s3.eu-west-2.amazonaws.com",
+    "http://support-manager-react-app.s3-website.eu-west-2.amazonaws.com/",
+    "https://d1v0xbkzql66b4.cloudfront.net",
+  ],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
 app.use(express.json({ limit: "1mb" }));
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://support-manager-react-app.s3.eu-west-2.amazonaws.com",
-      "https://d1v0xbkzql66b4.cloudfront.net",
-    ],
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-app.options(
-  "/pre-maintenance",
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://support-manager-react-app.s3.eu-west-2.amazonaws.com",
-      "https://d1v0xbkzql66b4.cloudfront.net",
-    ],
-    methods: ["POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(rateLimit({ windowMs: 60_000, max: 30 }));
 
 // simple API auth
