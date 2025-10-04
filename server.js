@@ -39,7 +39,6 @@ const corsOptions = {
 
 app.use(express.json({ limit: "1mb" }));
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(rateLimit({ windowMs: 60_000, max: 30 }));
 
 // simple API auth
@@ -58,9 +57,8 @@ app.use((req, res, next) => {
 
 // run pre-maintenance for all projects
 app.post("/pre-maintenance", async (req, res) => {
-  console.log("pre maintenance was triggered");
   const projects = Array.isArray(req.body?.projects) ? req.body.projects : [];
-  console.log("projects", projects);
+
   if (!projects.length) {
     return res
       .status(400)
@@ -77,6 +75,7 @@ app.post("/pre-maintenance", async (req, res) => {
         Status: "PENDING",
         CreatedAt: new Date().toISOString(),
         Progress: 0,
+        NumberOfProjects: projects.length,
       },
     })
   );
@@ -145,6 +144,7 @@ app.get("/jobs/status/:status", async (req, res) => {
       jobId: job.JobId,
       status: job.Status,
       progress: Number(job.Progress),
+      numberOfProjects: Number(job.NumberOfProjects),
       results: job.Results || [],
       createdAt: job.CreatedAt,
     });
