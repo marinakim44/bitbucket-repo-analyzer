@@ -32,6 +32,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://support-manager-react-app.s3.eu-west-2.amazonaws.com",
+      "https://d1v0xbkzql66b4.cloudfront.net",
     ],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -43,6 +44,7 @@ app.options(
     origin: [
       "http://localhost:5173",
       "https://support-manager-react-app.s3.eu-west-2.amazonaws.com",
+      "https://d1v0xbkzql66b4.cloudfront.net",
     ],
     methods: ["POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
