@@ -140,14 +140,26 @@ app.get("/jobs/status/:status", async (req, res) => {
       )[0];
     }
 
-    return res.json({
-      jobId: job.JobId,
-      status: job.Status,
-      progress: Number(job.Progress),
-      numberOfProjects: Number(job.NumberOfProjects),
-      results: job.Results || [],
-      createdAt: job.CreatedAt,
-    });
+    if(requested === "completed") {
+      return res.json({
+        jobId: job.JobId,
+        status: job.Status,
+        progress: Number(job.Progress),
+        numberOfProjects: Number(job.NumberOfProjects),
+        results: job.Results || [],
+        createdAt: job.CreatedAt,
+        allCompletedJobs: items
+      });
+    } else {
+      return res.json({
+        jobId: job.JobId,
+        status: job.Status,
+        progress: Number(job.Progress),
+        numberOfProjects: Number(job.NumberOfProjects),
+        results: job.Results || [],
+        createdAt: job.CreatedAt,
+      });
+    }
   } catch (err) {
     console.error("Error fetching jobs:", err);
     return res
