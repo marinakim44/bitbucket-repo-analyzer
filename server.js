@@ -11,12 +11,6 @@ app.get("/health", (_req, res) => {
 });
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://support-manager-react-app.s3.eu-west-2.amazonaws.com",
-    "http://support-manager-react-app.s3-website.eu-west-2.amazonaws.com/",
-    "https://d1v0xbkzql66b4.cloudfront.net",
-  ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
